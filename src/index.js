@@ -2,7 +2,7 @@ import Baby from "babyparse";
 import set from "lodash.set";
 
 export default function i18nCsv() {
-    const re = new RegExp(/^(.*\.(csv$))?[^.]*$/i);
+    const re = new RegExp(/^.+\.csv$/i);
 
     function makeObject(file) {
         let csv    = Baby.parse(file, { header : true }),
@@ -37,8 +37,6 @@ export default function i18nCsv() {
             if(re.test(id)) {
                 return `export default ${JSON.stringify(makeObject(code))};`;
             }
-
-            return code;
         }
     };
 }
