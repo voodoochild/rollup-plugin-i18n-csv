@@ -1,0 +1,53 @@
+{
+  "name": "rollup-plugin-i18n-csv",
+  "version": "1.0.0",
+  "description": "Rollup plugin to convert CSV i18n definitions into nested JavaScript objects",
+  "author": "Kriss Watt <kriss.watt@gmail.com>",
+  "license": "MIT",
+  "main": "dist/rollup-plugin-i18n-csv.cjs.js",
+  "module": "dist/rollup-plugin-i18n-csv.es.js",
+  "jsnext:main": "dist/rollup-plugin-i18n-csv.es.js",
+  "files": [
+    "src",
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "mocha",
+    "pretest": "npm run build",
+    "build": "rollup -c",
+    "prebuild": "rm -rf dist/",
+    "prepublish": "npm test"
+  },
+  "keywords": [
+    "rollup",
+    "rollup-plugin",
+    "i18n",
+    "csv"
+  ],
+  "eslintConfig": {
+    "extends": "arenanet",
+    "env": {
+      "node": true,
+      "mocha": true,
+      "browser": true
+    },
+    "parserOptions": {
+      "sourceType": "module"
+    },
+    "rules": {
+      "consistent-return": "off"
+    }
+  },
+  "devDependencies": {
+    "eslint": "^3.16.0",
+    "eslint-config-arenanet": "^3.3.0",
+    "mocha": "^3.2.0",
+    "rollup": "^0.41.4",
+    "rollup-plugin-buble": "^0.15.0"
+  },
+  "dependencies": {
+    "babyparse": "^0.4.6",
+    "lodash.set": "^4.3.2"
+  }
+}
