@@ -37,6 +37,8 @@ export default function i18nCsv() {
             if(re.test(id)) {
                 return `export default ${JSON.stringify(makeObject(code))};`;
             }
+
+            return code;
         }
     };
 }
