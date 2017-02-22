@@ -1,8 +1,10 @@
 import Baby from "babyparse";
 import set from "lodash.set";
+import { createFilter } from "rollup-pluginutils";
 
-export default function i18nCsv() {
-    const re = new RegExp(/^.+\.csv$/i);
+export default function i18nCsv(options = {}) {
+    const include = options.include || "**/*.csv",
+        filter = createFilter(include, options.exclude);
 
     function makeObject(file) {
         let csv    = Baby.parse(file, { header : true }),
@@ -34,7 +36,7 @@ export default function i18nCsv() {
         name : "i18n-csv",
 
         transform : (code, id) => {
-            if(re.test(id)) {
+            if(filter(id)) {
                 return `export default ${JSON.stringify(makeObject(code))};`;
             }
         }
