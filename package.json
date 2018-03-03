@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-i18n-csv",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Rollup plugin to convert CSV i18n definitions into nested JavaScript objects",
   "author": "Kriss Watt <kriss.watt@gmail.com>",
   "license": "MIT",
