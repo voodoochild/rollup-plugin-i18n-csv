@@ -4,7 +4,7 @@ import { createFilter } from "rollup-pluginutils";
 
 export default function i18nCsv(options = {}) {
     const include = options.include || "**/*.csv",
-        filter = createFilter(include, options.exclude);
+          filter = createFilter(include, options.exclude);
 
     function makeObject(file) {
         let csv    = Baby.parse(file, { header : true }),
@@ -37,7 +37,10 @@ export default function i18nCsv(options = {}) {
 
         transform : (code, id) => {
             if(filter(id)) {
-                return `export default ${JSON.stringify(makeObject(code))};`;
+                return {
+                    code : `export default ${JSON.stringify(makeObject(code))};`,
+                    map  : { mappings : "" }
+                };
             }
         }
     };
