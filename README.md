@@ -53,6 +53,23 @@ console.log(i18n);
 
 If a translation is missing the value will default to the English value wrapped with `[[` `]]` for visibility.
 
+## Custom object path
+
+If an alternative object output structure is required you can supply a function which takes the CSV row and current field as arguments:
+
+```javascript
+i18nCsv({
+    path : (row, field) => ([ field, row.key ])
+})
+
+// {
+//     en : {
+//         "login.forgot.linktest" : "Forgot your password?"
+//     },
+//     ...
+// }
+```
+
 ## License
 
 MIT

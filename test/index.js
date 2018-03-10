@@ -1,36 +1,37 @@
-var assert = require("assert"),
-    rollup = require("rollup"),
-    buble = require("rollup-plugin-buble"),
-    i18nCsv = require("..");
+const assert = require("assert"),
+      rollup = require("rollup"),
+      buble = require("rollup-plugin-buble"),
+      i18nCsv = require("..");
 
 process.chdir(__dirname);
 
-describe("rollup-plugin-i18n-csv", function() {
-    it("converts csv", function() {
-        return rollup.rollup({
-            entry   : "samples/basic.js",
-            plugins : [ buble(), i18nCsv() ]
-        })
-        .then(function(bundle) {
-            var generated = bundle.generate(),
-                code = generated.code,
-                fn = new Function("assert", code);
-
-            fn(assert);
-        });
+function makeBundle(entry, options = {}) {
+    return rollup.rollup({
+        entry   : entry,
+        plugins : [ buble(), i18nCsv(options) ]
     });
+}
 
-    it("defaults to en when translations missing", function() {
-        return rollup.rollup({
-            entry   : "samples/default-to-en.js",
-            plugins : [ buble(), i18nCsv() ]
-        })
-        .then(function(bundle) {
-            var generated = bundle.generate(),
-                code = generated.code,
-                fn = new Function("assert", code);
+function testBundle(bundle) {
+    const generated = bundle.generate(),
+          code = generated.code,
+          fn = new Function("assert", code);
 
-            fn(assert);
-        });
-    });
+    fn(assert);
+}
+
+describe("rollup-plugin-i18n-csv", () => {
+    it("converts csv", () =>
+        makeBundle("samples/basic.js").then(testBundle)
+    );
+
+    it("defaults to en when translations missing", () =>
+        makeBundle("samples/default-to-en.js").then(testBundle)
+    );
+
+    it("accepts a custom path option", () =>
+        makeBundle("samples/custom-path.js", {
+            path : (row, field) => ([ field, row.key ])
+        }).then(testBundle)
+    );
 });

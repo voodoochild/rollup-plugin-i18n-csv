@@ -1,5 +1,5 @@
-import Baby from "babyparse";
-import set from "lodash.set";
+import Papa from "papaparse";
+import setWith from "lodash.setwith";
 import { createFilter } from "rollup-pluginutils";
 
 export default function i18nCsv(options = {}) {
@@ -7,16 +7,16 @@ export default function i18nCsv(options = {}) {
           filter = createFilter(include, options.exclude);
 
     function makeObject(file) {
-        let csv    = Baby.parse(file, { header : true }),
-            fields = csv.meta.fields.filter((field) => field !== "key"),
-            strings = {};
+        const csv    = Papa.parse(file, { header : true }),
+              fields = csv.meta.fields.filter((field) => field !== "key"),
+              path   = options.path ? options.path : (row, field) => `${field}.${row.key}`;
 
-        // build out I18n object
+        let strings = {};
+
         csv.data.forEach((row) => {
             fields.forEach((field) => {
                 let value = row[field];
 
-                // Sometimes we get empty row data, filter it out
                 if(!row.key) {
                     return;
                 }
@@ -25,7 +25,7 @@ export default function i18nCsv(options = {}) {
                     value = field.indexOf("en") === 0 ? row.en : `[[${row.en}]]`;
                 }
 
-                set(strings, `${field}.${row.key}`, value);
+                setWith(strings, path(row, field), value, Object);
             });
         });
 
